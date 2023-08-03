@@ -1,18 +1,9 @@
-# Biconomy SDK Demo
-
-Example codes for integrating biconomy sdk in your repo.
-
-- [https://sdk-staging.biconomy.io](https://sdk-staging.biconomy.io)
-
 #### Run locally
 
 ```bash
-git clone https://github.com/bcnmy/sdk-demo.git
-cd sdk-demo
+git clone https://github.com/Sotatek-TinHa/AA-Demo.git
+cd AA-demo
 yarn install
 yarn start
 ```
-# AA-Demo
-# AA-Demo
-# AA-Demo
-# AA-Demo
+
