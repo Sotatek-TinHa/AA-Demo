@@ -49,7 +49,7 @@ const DepositErc20: React.FC = () => {
 
       const approveCallData = iFace.encodeFunctionData("approve", [
         config.lagomContract.address,
-        ethers.BigNumber.from("100000"),
+        ethers.BigNumber.from("1000000"),
       ]);
       const tx1 = {
         to: config.usdt.address,
@@ -65,7 +65,7 @@ const DepositErc20: React.FC = () => {
 
       const depositErc20 = await LagomContract.populateTransaction.deposit(
         config.usdt.address,
-        ethers.BigNumber.from("100000"),
+        ethers.BigNumber.from("1000000"),
         {
           from: scwAddress,
         }
@@ -98,7 +98,7 @@ const DepositErc20: React.FC = () => {
         receipt.transactionHash
       );
       setLoading(false);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 5000));
       getBalance();
     } catch (err: any) {
       console.error(err);
