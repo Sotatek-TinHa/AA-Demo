@@ -22,6 +22,7 @@ const DepositErc20: React.FC = () => {
   const { smartAccount, scwAddress } = useSmartAccountContext();
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [amtToDeposit, setAmtToDeposit] = useState(0);
 
   const getBalance = useCallback(async () => {
     if (!scwAddress || !web3Provider) return;
@@ -49,7 +50,7 @@ const DepositErc20: React.FC = () => {
 
       const approveCallData = iFace.encodeFunctionData("approve", [
         config.lagomContract.address,
-        ethers.BigNumber.from("1000000"),
+        ethers.BigNumber.from(amtToDeposit * 1000000),
       ]);
       const tx1 = {
         to: config.usdt.address,
@@ -65,7 +66,7 @@ const DepositErc20: React.FC = () => {
 
       const depositErc20 = await LagomContract.populateTransaction.deposit(
         config.usdt.address,
-        ethers.BigNumber.from("1000000"),
+        ethers.BigNumber.from(amtToDeposit * 1000000),
         {
           from: scwAddress,
         }
@@ -98,11 +99,13 @@ const DepositErc20: React.FC = () => {
         receipt.transactionHash
       );
       setLoading(false);
+      setAmtToDeposit(0);
       await new Promise((resolve) => setTimeout(resolve, 5000));
       getBalance();
     } catch (err: any) {
       console.error(err);
       setLoading(false);
+      setAmtToDeposit(0);
       showErrorMessage(err.message || "Error in sending the transaction");
     }
   };
@@ -129,6 +132,16 @@ const DepositErc20: React.FC = () => {
           ethers.utils.formatUnits(balance.toString(), 6)
         )}
       </p>
+
+      <h3 className={classes.h3Title}>Enter the amount to deposit</h3>
+
+      <input
+        type="number"
+        placeholder="0"
+        value={amtToDeposit}
+        onChange={(e) => setAmtToDeposit(+e.target.value)}
+        className={classes.input}
+      />
 
       <Button title="Deposit ERC-20" isLoading={loading} onClickFunc={makeTx} />
     </main>
