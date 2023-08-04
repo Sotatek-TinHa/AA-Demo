@@ -25,12 +25,12 @@ const DepositErc20: React.FC = () => {
 
   const getBalance = useCallback(async () => {
     if (!scwAddress || !web3Provider) return;
-    const erc20Contract = new ethers.Contract(
-      config.terc20.address,
-      config.terc20.abi,
+    const usdtContract = new ethers.Contract(
+      config.usdt.address,
+      config.usdt.abi,
       web3Provider
     );
-    const count = await erc20Contract.balanceOf(scwAddress);
+    const count = await usdtContract.balanceOf(scwAddress);
     console.log("count", Number(count));
     setBalance(Number(count));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,7 +49,7 @@ const DepositErc20: React.FC = () => {
 
       const approveCallData = iFace.encodeFunctionData("approve", [
         config.lagomContract.address,
-        ethers.BigNumber.from("1000000"),
+        ethers.BigNumber.from("100000"),
       ]);
       const tx1 = {
         to: config.usdt.address,
@@ -65,7 +65,7 @@ const DepositErc20: React.FC = () => {
 
       const depositErc20 = await LagomContract.populateTransaction.deposit(
         config.usdt.address,
-        ethers.BigNumber.from("1000000"),
+        ethers.BigNumber.from("100000"),
         {
           from: scwAddress,
         }
@@ -115,20 +115,18 @@ const DepositErc20: React.FC = () => {
 
       <h3 className={classes.subTitle}>Deposit ERC20 Gasless Flow</h3>
 
-      <p>This is single transaction to mint an test ERC-20 contract.</p>
+      <p>This is single transaction to deposit an ERC-20 token into Lagom.</p>
 
       <p>
-        Test ERC20 Token: {config.terc20.address}{" "}
-        <span style={{ fontSize: 13, color: "#FFB4B4" }}>
-          (same of goerli, mumbai, polygon)
-        </span>
+        ERC20 Token: {config.usdt.address}{" "}
+        <span style={{ fontSize: 13, color: "#FFB4B4" }}>(mumbai)</span>
       </p>
       <p style={{ marginBottom: 30, marginTop: 30, fontSize: 24 }}>
         ERC20 Balance in SCW:{" "}
         {balance === null ? (
           <p style={{ color: "#7E7E7E", display: "contents" }}>fetching...</p>
         ) : (
-          ethers.utils.formatEther(balance.toString())
+          ethers.utils.formatUnits(balance.toString(), 6)
         )}
       </p>
 
