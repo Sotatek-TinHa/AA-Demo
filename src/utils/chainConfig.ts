@@ -7,7 +7,7 @@ export const ChainId = {
 };
 
 export let activeChainId = ChainId.POLYGON_MUMBAI;
-export const paymasterApi = "https://paymaster.biconomy.io/api/v1/80001/WEX9LXdFW.13107308-4631-4ba5-9e23-2a8bf8270948";
+export const paymasterApi = "https://paymaster.biconomy.io/api/v1/80001/6ZcTLXx-3.14d46a3f-0eec-4946-b82d-42fc39762c87";
 export const bundlerUrl = "https://bundler.biconomy.io/api/v2/80001/WEX9LXdFW.13107308-4631-4ba5-9e23-2a8bf8270948";
 
 export const supportedChains = [
