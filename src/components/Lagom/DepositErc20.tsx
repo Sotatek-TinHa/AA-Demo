@@ -23,6 +23,7 @@ const DepositErc20: React.FC = () => {
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(false);
   const [amtToDeposit, setAmtToDeposit] = useState(0);
+  const [dec, setDec] = useState(0); // decimals of erc20
 
   const getBalance = useCallback(async () => {
     if (!scwAddress || !web3Provider) return;
@@ -31,6 +32,7 @@ const DepositErc20: React.FC = () => {
       config.usdt.abi,
       web3Provider
     );
+    setDec(await usdtContract.decimals());
     const count = await usdtContract.balanceOf(scwAddress);
     console.log("count", Number(count));
     setBalance(Number(count));
@@ -50,7 +52,7 @@ const DepositErc20: React.FC = () => {
 
       const approveCallData = iFace.encodeFunctionData("approve", [
         config.lagomContract.address,
-        ethers.BigNumber.from(amtToDeposit * 1000000),
+        ethers.utils.parseUnits(amtToDeposit.toString(), dec),
       ]);
       const tx1 = {
         to: config.usdt.address,
@@ -66,7 +68,7 @@ const DepositErc20: React.FC = () => {
 
       const depositErc20 = await LagomContract.populateTransaction.deposit(
         config.usdt.address,
-        ethers.BigNumber.from(amtToDeposit * 1000000),
+        ethers.utils.parseUnits(amtToDeposit.toString(), dec),
         {
           from: scwAddress,
         }
